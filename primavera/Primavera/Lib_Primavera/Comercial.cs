@@ -590,7 +590,7 @@ namespace FirstREST.Lib_Primavera
         }
 
 
-        public static List<Model.DocVenda> Encomendas_List()
+        public static List<Model.DocVenda> Encomendas_List(string typeDoc, string dateBegin, string dateEnd)
         {
             ErpBS objMotor = new ErpBS();
             
@@ -604,7 +604,7 @@ namespace FirstREST.Lib_Primavera
 
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, ModoPag, CondPag From CabecDoc where TipoDoc='ECL'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, ModoPag, CondPag From CabecDoc where TipoDoc LIKE '"+typeDoc+"' and Data>'"+dateBegin+"' and Data<'"+dateEnd+"'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.DocVenda();
@@ -797,6 +797,74 @@ namespace FirstREST.Lib_Primavera
             }
             else
                 return null;
+        }
+
+        internal static IEnumerable<Model.TopVenda> ListaTopVenda(long numLinhas)
+        {
+            ErpBS objMotor = new ErpBS();
+
+            StdBELista objList;
+
+            Model.TopVenda modo = new Model.TopVenda();
+            List<Model.TopVenda> listTopVenda = new List<Model.TopVenda>();
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " Artigo, sum(quantidade) AS Quantidade FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.Id WHERE CabecDoc.TipoDoc = 'FA' AND Artigo <> 'NULL' Group by Artigo ORDER BY Quantidade DESC");
+
+                while (!objList.NoFim())
+                {
+                    modo = new Model.TopVenda();
+                    modo.CodArtigo = objList.Valor("Artigo");
+                    modo.Quantidade = objList.Valor("Quantidade");
+
+                    listTopVenda.Add(modo);
+                    objList.Seguinte();
+                }
+
+                return listTopVenda;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        internal static IEnumerable<Model.TopCompra> ListaTopCompra(long numLinhas)
+        {
+            ErpBS objMotor = new ErpBS();
+
+            StdBELista objList;
+
+            Model.TopCompra modo = new Model.TopCompra();
+            List<Model.TopCompra> listTopCompra = new List<Model.TopCompra>();
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " LinhasCompras.Artigo, sum(quantidade) as quantidade FROM LinhasCompras LEFT JOIN CabecCompras on LinhasCompras.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'VFA' AND LinhasCompras.Artigo <> 'NULL' Group by Artigo ORDER BY Quantidade DESC");
+
+                while (!objList.NoFim())
+                {
+                    modo = new Model.TopCompra();
+                    modo.CodArtigo = objList.Valor("Artigo");
+                    modo.Quantidade = Math.Abs(objList.Valor("Quantidade")); //primavera grava quantidades de compras com valor negativo
+
+                    listTopCompra.Add(modo);
+                    objList.Seguinte();
+                }
+
+                return listTopCompra;
+
+            }
+            else
+            {
+                return null;
+
+            }
         }
     }
 }

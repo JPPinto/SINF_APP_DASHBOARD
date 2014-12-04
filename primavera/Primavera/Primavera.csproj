@@ -261,6 +261,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\TopCompraController.cs" />
+    <Compile Include="Controllers\TopVendaController.cs" />
     <Compile Include="Controllers\FornecedoresController.cs" />
     <Compile Include="Controllers\ModoPagController.cs" />
     <Compile Include="Controllers\CondPagController.cs" />
@@ -274,6 +276,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib_Primavera\Comercial.cs" />
+    <Compile Include="Lib_Primavera\Models\TopCompra.cs" />
+    <Compile Include="Lib_Primavera\Models\TopVenda.cs" />
     <Compile Include="Lib_Primavera\Models\Fornecedor.cs" />
     <Compile Include="Lib_Primavera\Models\ModoPag.cs" />
     <Compile Include="Lib_Primavera\Models\CondPag.cs" />
@@ -292,6 +296,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -381,7 +386,9 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

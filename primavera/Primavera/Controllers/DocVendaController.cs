@@ -16,14 +16,14 @@ namespace FirstREST.Controllers
         //
         // GET: /Clientes/
 
-        public IEnumerable<Lib_Primavera.Model.DocVenda> Get()
+        public IEnumerable<Lib_Primavera.Model.DocVenda> Get(string typeDoc, string dateBegin, string dateEnd)
         {
-            return Lib_Primavera.Comercial.Encomendas_List();
+            return Lib_Primavera.Comercial.Encomendas_List(typeDoc, dateBegin, dateEnd);
         }
 
 
         // GET api/cliente/5    
-        public Lib_Primavera.Model.DocVenda Get(string id)
+        public Lib_Primavera.Model.DocVenda GetOne(string id)
         {
             Lib_Primavera.Model.DocVenda docvenda = Lib_Primavera.Comercial.Encomenda_Get(id);
             if (docvenda == null)
