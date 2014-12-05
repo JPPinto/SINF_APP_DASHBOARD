@@ -15,7 +15,7 @@ namespace FirstREST.Lib_Primavera
 {
     public class Comercial
     {
-        const String COMPANYNAME = "BLFLR";
+        const String COMPANYNAME = "PEAU";
         const String USERNAME = "";
         const String PASSWORD = "";
         

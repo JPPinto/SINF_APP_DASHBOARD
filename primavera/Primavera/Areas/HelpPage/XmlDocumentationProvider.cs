@@ -17,6 +17,17 @@ namespace Primavera.Areas.HelpPage
         private const string MethodExpression = "/doc/members/member[@name='M:{0}']";
         private const string ParameterExpression = "param[@name='{0}']";
 
+
+        public virtual string GetDocumentation(HttpControllerDescriptor controllerDescriptor)
+        {
+            return null;
+        }
+
+        public virtual string GetResponseDocumentation(HttpActionDescriptor actionDescriptor)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlDocumentationProvider"/> class.
         /// </summary>
