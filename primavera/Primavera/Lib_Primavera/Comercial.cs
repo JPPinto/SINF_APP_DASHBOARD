@@ -905,5 +905,40 @@ namespace FirstREST.Lib_Primavera
                 return null;
             }
         }
+
+        internal static IEnumerable<Model.DividaCliente> ListaDividaCliente()
+        {
+            ErpBS objMotor = new ErpBS();
+
+            StdBELista objList;
+
+            Model.DividaCliente modo = new Model.DividaCliente();
+            List<Model.DividaCliente> listDividaCliente = new List<Model.DividaCliente>();
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as cliente, pendentes.pendente, coalesce(dividas.divida, 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade");
+
+                while (!objList.NoFim())
+                {
+                    modo = new Model.DividaCliente();
+                    modo.cliente = objList.Valor("cliente");
+                    modo.pendente = objList.Valor("pendente");
+                    modo.divida = objList.Valor("divida");
+
+                    listDividaCliente.Add(modo);
+                    objList.Seguinte();
+                }
+
+                return listDividaCliente;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
     }
 }
