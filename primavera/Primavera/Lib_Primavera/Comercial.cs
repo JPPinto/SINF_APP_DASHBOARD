@@ -16,6 +16,7 @@ namespace FirstREST.Lib_Primavera
     public class Comercial
     {
         const String COMPANYNAME = "PEAU";
+        //const String COMPANYNAME = "BLFLR";
         const String USERNAME = "";
         const String PASSWORD = "";
         
@@ -604,7 +605,7 @@ namespace FirstREST.Lib_Primavera
 
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
-                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, ModoPag, CondPag From CabecDoc where TipoDoc LIKE '"+typeDoc+"' and Data>'"+dateBegin+"' and Data<'"+dateEnd+"'");
+                objListCab = PriEngine.Engine.Consulta("SELECT id, Entidade, Data, NumDoc, TotalMerc, Serie, ModoPag, CondPag From CabecDoc where TipoDoc LIKE '"+typeDoc+"' and Data>='"+dateBegin+"' and Data<='"+dateEnd+"'");
                 while (!objListCab.NoFim())
                 {
                     dv = new Model.DocVenda();
@@ -858,6 +859,79 @@ namespace FirstREST.Lib_Primavera
                 }
 
                 return listTopCompra;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        internal static IEnumerable<Model.Faturacao> ListaFaturacao(string dateBegin, string dateEnd, string datePart)
+        {
+            ErpBS objMotor = new ErpBS();
+            
+            StdBELista objListFa;
+            Model.Faturacao fa = new Model.Faturacao();
+            List<Model.Faturacao> listfac = new List<Model.Faturacao>();
+
+            bool year = datePart.ToLower().Equals("year");
+            string query;
+            if (year)
+                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, SUM(PrecoLiquido) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<='" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data)";
+            else
+                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, DATEPART(" + datePart + ",LinhasDoc.Data) as parte, SUM(PrecoLiquido) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<='" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data)";
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+                objListFa = PriEngine.Engine.Consulta(query);
+                while (!objListFa.NoFim())
+                {
+                    fa = new Model.Faturacao();
+                    fa.ano = objListFa.Valor("ano");
+                    if(year)
+                        fa.parte = objListFa.Valor("ano");
+                    else
+                        fa.parte = objListFa.Valor("parte");
+                     fa.total = objListFa.Valor("total");
+                    listfac.Add(fa);
+                    objListFa.Seguinte();
+                }
+                return listfac;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal static IEnumerable<Model.DividaCliente> ListaDividaCliente()
+        {
+            ErpBS objMotor = new ErpBS();
+
+            StdBELista objList;
+
+            Model.DividaCliente modo = new Model.DividaCliente();
+            List<Model.DividaCliente> listDividaCliente = new List<Model.DividaCliente>();
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as cliente, pendentes.pendente, coalesce(dividas.divida, 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade");
+
+                while (!objList.NoFim())
+                {
+                    modo = new Model.DividaCliente();
+                    modo.cliente = objList.Valor("cliente");
+                    modo.pendente = objList.Valor("pendente");
+                    modo.divida = objList.Valor("divida");
+
+                    listDividaCliente.Add(modo);
+                    objList.Seguinte();
+                }
+
+                return listDividaCliente;
 
             }
             else
