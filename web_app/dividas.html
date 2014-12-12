@@ -20,6 +20,12 @@
   <!-- Custom Fonts -->
   <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+  <!-- Jquery UI CSS -->
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+
+  <!-- Chartist CSS -->
+  <link href="css/chartist.css" rel="stylesheet">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -76,6 +82,33 @@
         </div>
         <!-- /.row -->
 
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="ct-chart ct-octave"></div>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+              <h2>Clientes</h2>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped" id="tableDivida">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <!--<th>Nome</th>-->
+                      <th>Pendente</th>
+                      <th>Dívida</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        <!-- end row-->
+
       </div>
       <!-- /.container-fluid -->
 
@@ -90,6 +123,15 @@
 
   <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
+
+  <!-- jquery ui -->
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+  <!-- chartist -->
+  <script src="js/chartist.js"></script>
+
+  <script src="js/apiConf.js"></script>
+  <script src="js/dividas.js"></script>
 
 </body>
 
