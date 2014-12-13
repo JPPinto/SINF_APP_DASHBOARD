@@ -7,7 +7,13 @@ namespace FirstREST.Lib_Primavera.Model
 {
     public class DividaCliente
     {
-        public string cliente
+        public string codcliente
+        {
+            get;
+            set;
+        }
+
+        public string nomecliente
         {
             get;
             set;

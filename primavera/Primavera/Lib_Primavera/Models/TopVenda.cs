@@ -13,6 +13,12 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
+        public string NomeArtigo
+        {
+            get;
+            set;
+        }
+
         public double Quantidade
         {
             get;

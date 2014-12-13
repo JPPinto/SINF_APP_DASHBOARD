@@ -812,12 +812,13 @@ namespace FirstREST.Lib_Primavera
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " Artigo, sum(quantidade) AS Quantidade FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.Id WHERE CabecDoc.TipoDoc = 'FA' AND Artigo <> 'NULL' Group by Artigo ORDER BY Quantidade DESC");
+                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " LinhasDoc.Artigo, Artigo.descricao as NomeArtigo, sum(quantidade) AS Quantidade FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.Id left join Artigo on LinhasDoc.Artigo = Artigo.Artigo WHERE CabecDoc.TipoDoc = 'FA' AND LinhasDoc.Artigo <> 'NULL' Group by LinhasDoc.Artigo, Artigo.Descricao ORDER BY Quantidade DESC");
 
                 while (!objList.NoFim())
                 {
                     modo = new Model.TopVenda();
                     modo.CodArtigo = objList.Valor("Artigo");
+                    modo.NomeArtigo = objList.Valor("NomeArtigo");
                     modo.Quantidade = objList.Valor("Quantidade");
 
                     listTopVenda.Add(modo);
@@ -846,12 +847,13 @@ namespace FirstREST.Lib_Primavera
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " LinhasCompras.Artigo, sum(quantidade) as quantidade FROM LinhasCompras LEFT JOIN CabecCompras on LinhasCompras.IdCabecCompras = CabecCompras.Id WHERE CabecCompras.TipoDoc = 'VFA' AND LinhasCompras.Artigo <> 'NULL' Group by Artigo ORDER BY Quantidade DESC");
+                objList = PriEngine.Engine.Consulta("SELECT TOP " + numLinhas + " LinhasCompras.Artigo, Artigo.Descricao as NomeArtigo, sum(quantidade) as quantidade FROM LinhasCompras LEFT JOIN CabecCompras on LinhasCompras.IdCabecCompras = CabecCompras.Id left join Artigo on LinhasCompras.artigo = Artigo.artigo WHERE CabecCompras.TipoDoc = 'VFA' AND LinhasCompras.Artigo <> 'NULL' Group by LinhasCompras.Artigo, Artigo.descricao ORDER BY Quantidade ASC");
 
                 while (!objList.NoFim())
                 {
-                    modo = new Model.TopCompra();
+                    modo = new Model.TopCompra(); 
                     modo.CodArtigo = objList.Valor("Artigo");
+                    modo.NomeArtigo = objList.Valor("NomeArtigo");
                     modo.Quantidade = Math.Abs(objList.Valor("Quantidade")); //primavera grava quantidades de compras com valor negativo
 
                     listTopCompra.Add(modo);
@@ -918,12 +920,13 @@ namespace FirstREST.Lib_Primavera
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as cliente, pendentes.pendente, coalesce(dividas.divida, 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade");
+                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as codCliente, Clientes.Nome as nomeCliente, pendentes.pendente, coalesce(dividas.divida, 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade left join Clientes on pendentes.Entidade = Clientes.Cliente order by divida,pendente DESC");
 
                 while (!objList.NoFim())
                 {
                     modo = new Model.DividaCliente();
-                    modo.cliente = objList.Valor("cliente");
+                    modo.codcliente = objList.Valor("codCliente");
+                    modo.nomecliente = objList.Valor("nomeCliente");
                     modo.pendente = objList.Valor("pendente");
                     modo.divida = objList.Valor("divida");
 

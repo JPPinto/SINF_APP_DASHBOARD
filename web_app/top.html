@@ -20,6 +20,14 @@
   <!-- Custom Fonts -->
   <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+  <!-- Jquery UI CSS -->
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+
+  <!-- Chartist CSS -->
+  <link href="css/chartist.css" rel="stylesheet">
+
+  <link href="css/style.css" rel="stylesheet">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -70,10 +78,46 @@
         <div class="row">
           <div class="col-lg-12">
             <h1 class="page-header">Top de Vendas/Compras</h1>
+            <input type="number" id="numLinhas" min="1" placeholder="Número de artigos">
+            <input type="button" id="submit" value="Submeter">
           </div>
         </div>
         <!-- /.row -->
 
+        <div class="row hide">
+          <h2>Top Vendas</h2>
+          <div class="ct-chart ct-octave" id="chartTopVendas"></div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped" id="tableTopVendas">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row hide">
+          <h2>Top Compras</h2>
+          <div class="ct-chart ct-octave" id="chartTopCompras"></div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped" id="tableTopCompras">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Quantidade</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
       </div>
       <!-- /.container-fluid -->
 
@@ -88,6 +132,15 @@
 
   <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
+
+  <!-- jquery ui -->
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+  <!-- chartist -->
+  <script src="js/chartist.js"></script>
+
+  <script src="js/apiConf.js"></script>
+  <script src="js/top.js"></script>
 
 </body>
 
