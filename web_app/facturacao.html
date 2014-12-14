@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Autoprime - Dividas de Clientes</title>
+  <title>Autoprime - Facturação</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -43,19 +43,19 @@
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
           <li>
-            <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            <a href="index.html"><span class="glyphicon glyphicon-th-large"></span> &nbsp;Dashboard</a>
           </li>
           <li>
-            <a href="facturacao.html"><span class="glyphicon glyphicon-file"></span> Facturação por Periodo</a>
+            <a href="dividas.html"><span class="glyphicon glyphicon-user"></span> &nbsp;Dividas de Clientes</a>
           </li>
           <li>
-            <a href="comparacao.html"><i class="fa fa-fw fa-edit"></i> Comparação Vs Periodo Homólogo</a>
+            <a href="facturacao.html"><span class="glyphicon glyphicon-euro"></span> &nbsp;Top Vendas/Compras</a>
           </li>
           <li>
-            <a href="top.html"><i class="fa fa-fw fa-desktop"></i> Top de Vendas/Compras</a>
+            <a href="comparacao.html"><span class="glyphicon glyphicon-random"></span> &nbsp;Comparação Vs Periodo Homólogo</a>
           </li>
           <li>
-            <a href="dados.html"><i class="fa fa-fw fa-wrench"></i> Dados de Histórico</a>
+            <a href="dados.html"><span class="glyphicon glyphicon-list"></span> &nbsp;Dados de Histórico</a>
           </li>
         </ul>
       </div>
@@ -70,12 +70,24 @@
         <div class="row">
           <div class="col-lg-12">
             <h1 class="page-header">
-                            Dívidas de Clientes
+                            Facturação por Periodo Homólogo
                         </h1>
           </div>
         </div>
         <!-- /.row -->
-
+        <div class="row">
+          <div class="container">
+            <div class="hero-unit">
+                <div class="col-lg-12 input-daterange" id="datepicker" >
+                    <label for="start">Escolha o periodo no qual pretenda ver a facturação: </label>
+                    <input type="text" class="input-small" name="start" />
+                    <span class="add-on" style="vertical-align: top;height:20px">To</span>
+                    <input type="text" class="input-small" name="end" />
+                    <button type="button" class="btn btn-danger"id="submit">Submeter</button>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- /.container-fluid -->
 
@@ -90,6 +102,15 @@
 
   <!-- Bootstrap Core JavaScript -->
   <script src="js/bootstrap.min.js"></script>
+
+  <!--Bootsttrap DatePicker-->
+  <script src="js/bootstrap-datepicker.js"></script>
+
+  <script src="js/chartist.js"></script>
+
+  <script src="js/apiConf.js"></script>
+
+  <script src="js/facturacao.js"></script>
 
 </body>
 
