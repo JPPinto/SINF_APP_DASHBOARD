@@ -23,7 +23,6 @@ $('#submit').click(function(){
   }
 
   if(dateType === "mes"){
-    alert("HERE!");
     dateType = "month";
     startDate = startDate + "-01T00:00:00";
     endDate = endDate + "-01T00:00:00"
@@ -35,6 +34,21 @@ $('#submit').click(function(){
 
   $.getJSON(baseURL + "Faturacao", {'dateBegin':startDate, 'dateEnd':endDate,'datePart':dateType}, function(data) {
     console.log("DATA: " + JSON.stringify(data));
+
+    $('table#tableFacturacao>tbody').empty();
+
+    for (var i = 0; i < data.length; i++) {
+      //chartLabels.push(data[i].codcliente);
+      //chartSeries[0].push(data[i].pendente);
+      //chartSeries[1].push(data[i].divida);
+      $('table#tableFacturacao>tbody').append('<tr><td>' + data[i].ano + '</td><td>' + data[i].parte + '</td><td>' + data[i].total + '</td></tr>');
+    }
+
+    $('div#table').css('display','');
+
+    if(data.length <= 0) {
+      $('table#tableFacturacao>tbody').append('<tr><td>NO_RESULTS</td><td>NO_RESULTS</td><td>NO_RESULTS</td></tr>');
+    }
   });
 });
 
