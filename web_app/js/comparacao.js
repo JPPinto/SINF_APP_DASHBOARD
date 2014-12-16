@@ -3,7 +3,7 @@ $('#submit').click(function(){
   console.log("End: " + $('#end').val());
 
   if($('#start').val() == "" || $('#end').val() == ""){
-    alert("Ambos os campos são necessários à definição do periodo de facturacao.");
+    alert("Ambos os campos são necessários à definição do periodo de comparação.");
     return;
   }
 
@@ -33,9 +33,9 @@ $('#submit').click(function(){
     dateType = "day";
   }
 
-  $.getJSON(baseURL + "Faturacao", {'dateBegin':startDate, 'dateEnd':endDate,'datePart':dateType}, function(data) {
+  /*$.getJSON(baseURL + "Faturacao", {'dateBegin':startDate, 'dateEnd':endDate,'datePart':dateType}, function(data) {
     console.log("DATA: " + JSON.stringify(data));
-  });
+  });*/
 });
 
 $('#dia').click(function(){
