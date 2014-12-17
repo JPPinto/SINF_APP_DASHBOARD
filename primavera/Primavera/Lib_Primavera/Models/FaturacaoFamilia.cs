@@ -7,7 +7,13 @@ namespace FirstREST.Lib_Primavera.Model
 {
     public class FaturacaoFamilia
     {
-        public string familia
+        public string codFamilia
+        {
+            get;
+            set;
+        }
+
+        public string descricao
         {
             get;
             set;

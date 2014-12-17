@@ -17,7 +17,7 @@ $("input:button#submit").click(function() {
         }
       }],
       ['screen and (min-width: 1024px)', {
-        labelOffset: 125,
+        labelOffset: 150,
         chartPadding: 50
       }]
     ];

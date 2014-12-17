@@ -11,15 +11,15 @@ $(document).ready(function() {
         }
       }],
       ['screen and (min-width: 1024px)', {
-        labelOffset: 125,
+        labelOffset: 150,
         chartPadding: 50
       }]
     ];
   $.getJSON(baseURL + "FaturacaoFamilia", function(data) {
       for (var i = 0; i < data.length; i++) {
-        chartLabels.push(data[i].familia);
+        chartLabels.push(data[i].codFamilia);
         chartSeries.push(data[i].total);
-        $('table#tableFacFamilia>tbody').append('<tr><td>' + data[i].familia + '</td><td>' + data[i].total + '</td></tr>');
+        $('table#tableFacFamilia>tbody').append('<tr><td>' + data[i].codFamilia + '</td><td>' + data[i].descricao + '</td><td>' + data[i].total + '</td></tr>');
       }
       var chartistData = {
         // A labels array that can contain any sort of values
