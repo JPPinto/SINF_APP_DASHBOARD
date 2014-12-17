@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Autoprime - Facturação por Família de Produto</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/sb-admin.css" rel="stylesheet">
+
+  <!-- Custom Fonts -->
+  <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+  <!-- Jquery UI CSS -->
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+
+  <!-- Chartist CSS -->
+  <link href="css/chartist.css" rel="stylesheet">
+
+  <link href="css/style.css" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+  <div id="wrapper">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">Autoprime</a>
+      </div>
+      <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav side-nav">
+          <li>
+            <a href="index.html"><span class="glyphicon glyphicon-th-large"></span> &nbsp;Dashboard</a>
+          </li>
+          <li>
+            <a href="dividas.html"><span class="glyphicon glyphicon-user"></span> &nbsp;Dividas de Clientes</a>
+          </li>
+          <li>
+            <a href="facturacao.html"><span class="glyphicon glyphicon-barcode"></span> &nbsp;Facturação por Periodo</a>
+          </li>
+		  <li>
+            <a href="facturacao_familia.html"><span class="glyphicon glyphicon-barcode"></span> &nbsp;Facturação por Família</a>
+          </li>
+          <li>
+            <a href="top.html"><span class="glyphicon glyphicon-euro"></span> &nbsp;Top Vendas/Compras</a>
+          </li>
+          <li>
+            <a href="comparacao.html"><span class="glyphicon glyphicon-random"></span> &nbsp;Comparação Vs Periodo Homólogo</a>
+          </li>
+          <li>
+            <a href="dados.html"><span class="glyphicon glyphicon-list"></span> &nbsp;Dados de Histórico</a>
+          </li>
+		  
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </nav>
+
+    <div id="page-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+          <div class="col-lg-12">
+            <h1 class="page-header">Facturação por Família de Produto</h1>
+          </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+          <div class="ct-chart ct-octave"></div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped" id="tableFacFamilia">
+              <thead>
+                <tr>
+                  <th>Família</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- jQuery -->
+  <script src="js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- jquery ui -->
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+  <!-- chartist -->
+  <script src="js/chartist.js"></script>
+
+  <script src="js/apiConf.js"></script>
+  <script src="js/facturacao_familia.js"></script>
+
+</body>
+
+</html>
