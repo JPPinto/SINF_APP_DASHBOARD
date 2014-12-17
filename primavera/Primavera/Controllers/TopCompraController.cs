@@ -16,7 +16,7 @@ namespace FirstREST.Controllers
     public class TopCompraController : ApiController
     {
         //
-        // GET: /TopVenda/
+        // GET: /TopCompra/
 
         public IEnumerable<Lib_Primavera.Model.TopCompra> Get(long numLinhas)
         {

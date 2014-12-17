@@ -271,6 +271,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\DividaClienteController.cs" />
+    <Compile Include="Controllers\FaturacaoFamiliaController.cs" />
     <Compile Include="Controllers\TopCompraController.cs" />
     <Compile Include="Controllers\FaturacaoController.cs" />
     <Compile Include="Controllers\TopVendaController.cs" />
@@ -288,6 +289,7 @@
     </Compile>
     <Compile Include="Lib_Primavera\Comercial.cs" />
     <Compile Include="Lib_Primavera\Models\DividaCliente.cs" />
+    <Compile Include="Lib_Primavera\Models\FaturacaoFamilia.cs" />
     <Compile Include="Lib_Primavera\Models\Faturacao.cs" />
     <Compile Include="Lib_Primavera\Models\TopCompra.cs" />
     <Compile Include="Lib_Primavera\Models\TopVenda.cs" />
