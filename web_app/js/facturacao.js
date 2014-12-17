@@ -48,6 +48,7 @@ $('button#submit').click(function(){
 
     $('table#tableFacturacao>tbody').empty();
 
+
     for (var i = 0; i < data.length; i++) {
 
       chartFacturasSeries[0].push(data[i].total);
@@ -83,6 +84,7 @@ $('button#submit').click(function(){
 
     if(data.length <= 0) {
       $('table#tableFacturacao>tbody').append('<tr><td>NO_RESULTS</td><td>NO_RESULTS</td><td>NO_RESULTS</td></tr>');
+      return;
     }
 
     var chartistData = {
@@ -103,10 +105,42 @@ $('button#submit').click(function(){
   });
 });
 
-/*$('button#submitTrimestre').click(function(){
-  console.log("Start: " + $('#start').val());
+$('button#submitTrimestre').click(function(){
+
+  var ano = $('#anoTrimestre').val();
+  var trimestre = $('#menuPicker').text();
+  console.log(ano + '    ' + trimestre);
+  if(ano === "" || trimestre === 'Trimestre de Facturação'){
+    alert("É necessário a selecção de um trimestre e um ano.");
+    return;
+  }
+
+  var startDate;
+  var endDate;
+  var dateType = "month";
+
+  switch (trimestre){
+    case "1º Trimestre (Jan, Fev, Mar, Abr)":
+      startDate = ano + '-01-01';
+      endDate = ano + '-04-30';
+      break;
+    case "2º Trimestre (Mai, Jun, Jul, Ago)":
+      startDate = ano + '-05-01';
+      endDate = ano + '-08-31';
+      break;
+    case "3º Trimestre (Set, Out, Nov, Dez)":
+      startDate = ano + '-09-01';
+      endDate = ano + '-12-31';
+      break;
+    default:
+      startDate = ano + '-01-01';
+      endDate = ano + '-01-01';
+      break;
+  }
 
   $.getJSON(baseURL + "Faturacao", {'dateBegin':startDate, 'dateEnd':endDate,'datePart':dateType}, function(data) {
+    var chartFacturasLabels = [];
+    var chartFacturasSeries = [[]];
     console.log("DATA: " + JSON.stringify(data));
 
     $('table#tableFacturacao>tbody').empty();
@@ -122,7 +156,6 @@ $('button#submit').click(function(){
       chartFacturasLabels.push(data[i].parte);
       $('thead>tr>th.second').css('display','');
       $('thead>tr>th.second').text("MM");
-
       $('table#tableFacturacao>tbody').append('<tr>' + appendAno + appendParte + appendTotal + '</tr>');
     }
 
@@ -130,6 +163,8 @@ $('button#submit').click(function(){
 
     if(data.length <= 0) {
       $('table#tableFacturacao>tbody').append('<tr><td>NO_RESULTS</td><td>NO_RESULTS</td><td>NO_RESULTS</td></tr>');
+      $('#chartFacturacao').css('display','none');
+      return;
     }
 
     var chartistData = {
@@ -148,19 +183,21 @@ $('button#submit').click(function(){
   .fail(function() {
     console.log("error");
   });
-});*/
+});
 
 $('#primeiroTrimestre').click(function(){
-  $('#menuPicker').text('1º Trimestre (Jan, Fev, Mar, Mai)');
+  $('#menuPicker').text('1º Trimestre (Jan, Fev, Mar, Abr)');
   $('#menuPicker').append("<span class=\"caret\"></span>");
 });
 
 $('#segundoTrimestre').click(function(){
-
+  $('#menuPicker').text('2º Trimestre (Mai, Jun, Jul, Ago)');
+  $('#menuPicker').append("<span class=\"caret\"></span>");
 });
 
 $('#terceiroTrimestre').click(function(){
-
+  $('#menuPicker').text('3º Trimestre (Set, Out, Nov, Dez)');
+  $('#menuPicker').append("<span class=\"caret\"></span>");
 });
 
 $('#dia').click(function(){
@@ -224,8 +261,20 @@ $('#ano').click(function(){
 });
 
 $('#trimestre').click(function(){
+
+  $('#anoTrimestre').text("");
+  $('#anoTrimestre').datepicker({
+    orientation:'top',
+    autoclose: 'true',
+    format: 'yyyy',
+    minViewMode: 'years',
+    language: 'pt'
+  });
+
   $('.input-daterange').css('display','none');
   $('#trimesterPicker').css('display','');
   $('#menuPeriodo').text('Trimestre');
   $('#menuPeriodo').append("<span class=\"caret\"></span>");
+  $('#menuPicker').text('Trimestre de Facturação');
+  $('#menuPicker').append("<span class=\"caret\"></span>");
 });
