@@ -1,3 +1,27 @@
+//var chartFacturasLabels = [];
+//var chartFacturasSeries = [];
+
+function dateFromDay(year, day){
+  var date = new Date(year, 0); // initialize a date in `year-01-01`
+  var temp =  new Date(date.setDate(day)); // add the number of days
+  return (temp.getMonth() + 1) + '/' + temp.getDate();
+}
+
+var responsiveOptions = [
+  ['screen and (min-width: 640px)', {
+    chartPadding: 30,
+    labelOffset: 100,
+    labelDirection: 'explode',
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  }],
+  ['screen and (min-width: 1024px)', {
+    labelOffset: 125,
+    chartPadding: 50
+  }]
+];
+
 $('#submit').click(function(){
   console.log("Start: " + $('#start').val());
   console.log("End: " + $('#end').val());
@@ -17,24 +41,61 @@ $('#submit').click(function(){
   var dateType = $('.dropdown-toggle').text().toLowerCase();
 
   if(dateType === "ano"){
+    //TABLE NAME PARTE EDIT TODO
     dateType = "year";
     startDate += "-01-01T00:00:00";
     endDate += "-01-01T00:00:00"
   }
 
   if(dateType === "mes"){
-    alert("HERE!");
     dateType = "month";
     startDate = startDate + "-01T00:00:00";
     endDate = endDate + "-01T00:00:00"
   }
 
   if(dateType === "dia"){
-    dateType = "day";
+    dateType = "dayofyear";
   }
 
   $.getJSON(baseURL + "Faturacao", {'dateBegin':startDate, 'dateEnd':endDate,'datePart':dateType}, function(data) {
     console.log("DATA: " + JSON.stringify(data));
+
+    $('table#tableFacturacao>tbody').empty();
+
+    for (var i = 0; i < data.length; i++) {
+      //chartFacturaLabels.push(data[i].ano);
+      //chartFacturaSeries.push(data[i].total);
+
+      var appendAno = '<td>' + data[i].ano + '</td>';
+      var appendParte = '<td>' + data[i].parte + '</td>';
+      var appendTotal = '<td>' + data[i].total + '</td>';
+
+      if(dateType === "dayofyear"){
+        appendParte = '<td>' + dateFromDay(data[i].ano,data[i].parte) + '</td>';
+        $('thead>tr>th.second').css('display','');
+        $('thead>tr>th.second').text("MM/DD");
+      }
+
+      if(dateType === "month"){
+        $('thead>tr>th.second').css('display','');
+        $('thead>tr>th.second').text("MM");
+      }
+
+      if(dateType === "year"){
+        appendParte = '';
+        $('thead>tr>th.second').css('display','none');
+      }
+
+      $('table#tableFacturacao>tbody').append('<tr>' + appendAno + appendParte + appendTotal + '</tr>');
+    }
+
+    $('div#table').css('display','');
+
+    if(data.length <= 0) {
+      $('table#tableFacturacao>tbody').append('<tr><td>NO_RESULTS</td><td>NO_RESULTS</td><td>NO_RESULTS</td></tr>');
+    }
+
+
   });
 });
 
