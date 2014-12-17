@@ -16,13 +16,12 @@ namespace FirstREST.Controllers
     public class FaturacaoController : ApiController
     {
         //
-        // GET: /TopVenda/
+        // GET: /Faturacao?dateBegin=x&dateEnd=y&datePart=z/
 
         public IEnumerable<Lib_Primavera.Model.Faturacao> Get(string dateBegin, string dateEnd, string datePart)
         {
             return Lib_Primavera.Comercial.ListaFaturacao(dateBegin, dateEnd, datePart);
         }
-
     }
 }
 

@@ -881,9 +881,9 @@ namespace FirstREST.Lib_Primavera
             bool year = datePart.ToLower().Equals("year");
             string query;
             if (year)
-                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, SUM(PrecoLiquido) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<='" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data)";
+                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, round(SUM(PrecoLiquido),2) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<'" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data)";
             else
-                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, DATEPART(" + datePart + ",LinhasDoc.Data) as parte, SUM(PrecoLiquido) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<='" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data)";
+                query = "SELECT DATEPART(year,LinhasDoc.Data) as ano, DATEPART(" + datePart + ",LinhasDoc.Data) as parte, round(SUM(PrecoLiquido),2) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID WHERE CabecDoc.TipoDoc = 'FA' and LinhasDoc.Data>='" + dateBegin + "' and LinhasDoc.Data<'" + dateEnd + "' GROUP BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data) ORDER BY DATEPART(year,LinhasDoc.Data), DATEPART(" + datePart + ",LinhasDoc.Data)";
 
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
@@ -920,7 +920,7 @@ namespace FirstREST.Lib_Primavera
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as codCliente, Clientes.Nome as nomeCliente, pendentes.pendente, coalesce(dividas.divida, 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade left join Clientes on pendentes.Entidade = Clientes.Cliente order by divida,pendente DESC");
+                objList = PriEngine.Engine.Consulta("SELECT pendentes.entidade as codCliente, Clientes.Nome as nomeCliente, round(pendentes.pendente,2) as pendente, coalesce(round(dividas.divida,2), 0) as divida FROM (select entidade, sum(valorPendente) as divida from Pendentes where dateadd(day,datediff(day,0,getdate()),0)>DataVenc group by entidade) as Dividas RIGHT JOIN (select entidade, sum(valorpendente) as pendente from Pendentes where tipoentidade = 'C' group by entidade) as pendentes ON dividas.entidade = pendentes.Entidade left join Clientes on pendentes.Entidade = Clientes.Cliente order by divida DESC,pendente DESC");
 
                 while (!objList.NoFim())
                 {
@@ -935,6 +935,40 @@ namespace FirstREST.Lib_Primavera
                 }
 
                 return listDividaCliente;
+
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        internal static IEnumerable<Model.FaturacaoFamilia> ListaFaturacaoFamilia()
+        {
+            ErpBS objMotor = new ErpBS();
+
+            StdBELista objList;
+
+            Model.FaturacaoFamilia modo = new Model.FaturacaoFamilia();
+            List<Model.FaturacaoFamilia> listFaturacaoFamilia = new List<Model.FaturacaoFamilia>();
+
+            if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
+            {
+
+                objList = PriEngine.Engine.Consulta("SELECT artigo.familia, round(SUM(PrecoLiquido),2) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID LEFT JOIN Artigo ON LinhasDoc.Artigo = Artigo.Artigo WHERE CabecDoc.TipoDoc = 'FA' AND Artigo.Artigo <> 'NULL' group by artigo.familia order by total desc");
+
+                while (!objList.NoFim())
+                {
+                    modo = new Model.FaturacaoFamilia();
+                    modo.familia = objList.Valor("familia");
+                    modo.total = objList.Valor("total");
+
+                    listFaturacaoFamilia.Add(modo);
+                    objList.Seguinte();
+                }
+
+                return listFaturacaoFamilia;
 
             }
             else
