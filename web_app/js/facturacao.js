@@ -25,7 +25,7 @@ $('button#submit').click(function(){
 
   if(dateType === "ano"){
     dateType = "year";
-    dateEND.setMonth(11);
+    dateEND.setMonth(12);
     startDate += "-01-01";
     endDate = dateEND.getFullYear() + "-" + (dateEND.getMonth() + 1) + "-" + dateEND.getDate();
   }
