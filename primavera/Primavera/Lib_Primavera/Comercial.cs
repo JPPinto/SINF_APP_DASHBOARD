@@ -952,21 +952,27 @@ namespace FirstREST.Lib_Primavera
 
             Model.FaturacaoFamilia modo = new Model.FaturacaoFamilia();
             List<Model.FaturacaoFamilia> listFaturacaoFamilia = new List<Model.FaturacaoFamilia>();
+            double total = 0;
 
             if (PriEngine.InitializeCompany(COMPANYNAME, USERNAME, PASSWORD) == true)
             {
 
-                objList = PriEngine.Engine.Consulta("SELECT artigo.familia, familias.descricao, round(SUM(PrecoLiquido),2) AS total FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID LEFT JOIN Artigo ON LinhasDoc.Artigo = Artigo.Artigo LEFT JOIN Familias on Artigo.Familia = Familias.Familia WHERE CabecDoc.TipoDoc = 'FA' AND Artigo.Artigo <> 'NULL' group by artigo.familia, familias.descricao order by total desc");
+                objList = PriEngine.Engine.Consulta("SELECT artigo.familia, familias.descricao, SUM(PrecoLiquido) AS totalFamilia FROM LinhasDoc LEFT JOIN CabecDoc on LinhasDoc.IdCabecDoc = CabecDoc.ID LEFT JOIN Artigo ON LinhasDoc.Artigo = Artigo.Artigo LEFT JOIN Familias on Artigo.Familia = Familias.Familia WHERE CabecDoc.TipoDoc = 'FA' AND Artigo.Artigo <> 'NULL' group by artigo.familia, familias.descricao order by totalFamilia desc");
 
                 while (!objList.NoFim())
                 {
                     modo = new Model.FaturacaoFamilia();
                     modo.codFamilia = objList.Valor("familia");
                     modo.descricao = objList.Valor("descricao");
-                    modo.total = objList.Valor("total");
+                    modo.percentagem = objList.Valor("totalFamilia");
+                    total += modo.percentagem;
 
                     listFaturacaoFamilia.Add(modo);
                     objList.Seguinte();
+                }
+
+                foreach(Model.FaturacaoFamilia ff in listFaturacaoFamilia) {
+                    ff.percentagem /= total;
                 }
 
                 return listFaturacaoFamilia;

@@ -17,9 +17,10 @@ $(document).ready(function() {
     ];
   $.getJSON(baseURL + "FaturacaoFamilia", function(data) {
       for (var i = 0; i < data.length; i++) {
+		data[i].percentagem = (Math.round(data[i].percentagem * 10000) / 100);
         chartLabels.push(data[i].codFamilia);
-        chartSeries.push(data[i].total);
-        $('table#tableFacFamilia>tbody').append('<tr><td>' + data[i].codFamilia + '</td><td>' + data[i].descricao + '</td><td>' + data[i].total + '</td></tr>');
+        chartSeries.push(data[i].percentagem);
+        $('table#tableFacFamilia>tbody').append('<tr><td>' + data[i].codFamilia + '</td><td>' + data[i].descricao + '</td><td>' + data[i].percentagem + '</td></tr>');
       }
       var chartistData = {
         // A labels array that can contain any sort of values

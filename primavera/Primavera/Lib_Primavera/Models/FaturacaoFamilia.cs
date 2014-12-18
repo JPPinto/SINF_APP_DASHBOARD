@@ -19,7 +19,7 @@ namespace FirstREST.Lib_Primavera.Model
             set;
         }
 
-        public double total
+        public double percentagem
         {
             get;
             set;
